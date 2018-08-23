@@ -6,11 +6,11 @@ DESTINATION = ""
 ENCODE = "utf-8"
 
 
-def sendallStr(conn, msg: str, enc=ENCODE: str):
-    conn.sendall(str.encode(encoding=encode))
+def sendallStr(conn, msg, enc=ENCODE):
+    conn.sendall(msg.encode(encoding=encode))
 
 
-def recieveStr(conn, enc=ENCODE: str, size=1024: int):
+def recieveStr(conn, enc=ENCODE, size=1024):
     return conn.recv(size).decode(encoding=enc)
 
 

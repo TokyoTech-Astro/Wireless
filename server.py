@@ -4,11 +4,11 @@ import socket
 ENCODE = "utf-8"
 
 
-def sendStr(conn, msg:str, enc=ENCODE: str):
+def sendStr(conn, msg, enc=ENCODE):
     conn.send(str.encode(encoding=enc))
 
 
-def recieveStr(conn, enc=ENCODE: str, size=1024: int):
+def recieveStr(conn, enc=ENCODE, size=1024):
     return conn.recv(size).decode(encoding=enc)
 
 
