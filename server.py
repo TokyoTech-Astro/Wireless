@@ -5,7 +5,7 @@ ENCODE = "utf-8"
 
 
 def sendStr(conn, msg, enc=ENCODE):
-    conn.send(str.encode(encoding=enc))
+    conn.send(msg.encode(encoding=enc))
 
 
 def recieveStr(conn, enc=ENCODE, size=1024):
