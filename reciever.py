@@ -15,7 +15,7 @@ def recieveStr(conn, enc=ENCODE, size=1024):
     return conn.recv(size).decode(encoding=enc)
 
 
-GPIO.setmode(GPIO.BUM)
+GPIO.setmode(GPIO.BUS)
 GPIO.setup(PIN, GPIO.OUT)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -25,10 +25,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         print(data)
         if data == "on":
             GPIO.output(PIN, GPIO.HIGH)
-            print(" -> DONE" end="")
+            print(" -> DONE", end="")
         elif data == "off":
             GPIO.output(PIN, GPIO.LOW)
-            print(" -> DONE" end="")
+            print(" -> DONE", end="")
         sendStr(s, "s")
         if data == "exit" or data == "quit":
             print()

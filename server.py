@@ -20,8 +20,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         print(addr)
         with conn:
             while True:
-                data = input(">")
-                sendStr(conn, data)
+                inp = input(">")
+                sendStr(conn, inp)
                 data = recieveStr(conn)
                 if data == "f":
                     print("Failed.")
@@ -34,6 +34,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     sendStr(conn, "exit")
                     conn.close()
                     sys.exit()
-                if data == "quit" or data == "exit":
+                if inp == "quit" or inp == "exit":
                     conn.close()
-                    sys.exit()
+                    break
+        
