@@ -34,6 +34,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     sendStr(conn, "exit")
                     conn.close()
                     sys.exit()
-                if data == "quit" or "exit":
+                if data == "quit" or data == "exit":
                     conn.close()
                     sys.exit()

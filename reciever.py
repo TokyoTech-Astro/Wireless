@@ -19,7 +19,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     while True:
         data = recieveStr(s)
         print(data, end="")
-        if data == "exit" or "quit":
+        if data == "exit" or data == "quit":
             s.close()
             sys.exit()
         sendStr(s, "s")
