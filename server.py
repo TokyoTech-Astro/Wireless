@@ -1,7 +1,16 @@
+import sys
 import socket
 
-def sendStr(conn, msg:str, encode="UTF-8"):
-    conn.send(str.encode(encode))
+ENCODE = "utf-8"
+
+
+def sendStr(conn, msg:str, enc=ENCODE: str):
+    conn.send(str.encode(encoding=enc))
+
+
+def recieveStr(conn, enc=ENCODE: str, size=1024: int):
+    return conn.recv(size).decode(encoding=enc)
+
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind(('', 25565))
@@ -13,7 +22,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             while True:
                 data = input(">")
                 sendStr(conn, data)
-                data = conn.recv(1024)
+                data = recieveStr(conn)
                 if data == "f":
                     print("Failed.")
                     sendStr(conn, "exit")
