@@ -1,8 +1,11 @@
 import socket
-import RPi.GPIO as GPIO
 
 
-DESTINATION = ""
+DESTINATION = sys.argv[0]
+
+
+def sendallStr(conn, msg:str, encode="UTF-8"):
+    conn.sendall(str.encode(encode))
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((DESTINATION, 25565))
@@ -11,4 +14,4 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     if data == "exit" or "quit":
         s.close()
         sys.exit()
-    s.sendall("s")
+    sendallStr(s, "s")
