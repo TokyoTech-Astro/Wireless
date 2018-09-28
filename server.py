@@ -42,7 +42,8 @@ def communicate(service):
             with conn:
                 try:
                     while service(conn):
-                        pass
+                        if recieve(conn) != 0:
+                            raise Exception
                 except Exception as e:
                     send(conn, 0b01111111)
                     print(e)
