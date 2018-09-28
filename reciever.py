@@ -5,7 +5,6 @@ import RPi.GPIO as GPIO
 
 DESTINATION = ""
 ENCODE = "utf-8"
-PIN = 0
 
 def sendStr(conn, msg, enc=ENCODE):
     conn.send(msg.encode(encoding=enc))
