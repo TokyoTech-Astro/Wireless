@@ -3,8 +3,9 @@ import socket
 import RPi.GPIO as GPIO
 
 
-DESTINATION = ""
+DESTINATION = "192.168.11.3"
 ENCODE = "utf-8"
+
 
 def sendStr(conn, msg, enc=ENCODE):
     conn.send(msg.encode(encoding=enc))
@@ -15,38 +16,43 @@ def recieveStr(conn, enc=ENCODE, size=1024):
 
 
 def send(conn, value):
-    conn.send(value.to_bytes(1, 'big'))
+    conn.sendall(value.to_bytes(value, 'big'))
 
 
-def recieve(conn, size=256):
+def recieve(conn, size=8):
     return int.from_bytes(conn.recv(size), 'big')
 
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(PIN, GPIO.OUT)
+for i in range(2, 27):
+    GPIO.setup(i, GPIO.OUT)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((DESTINATION, 25565))
-    s.recieve = recieve
 
     try:
         while True:
-            data = recieveStr(s)
+            data = recieve(s)
             print(data)
             if data & 0b10000000 == 0b10000000:
                 pin = data ^ 0b10000000
+                print("TURN ON: %d -> " % pin, end="")
                 GPIO.output(pin, GPIO.HIGH)
-                print("TURN ON: %d -> DONE" % pin)
+                print("DONE")
             elif data != 0b01111111:
                 pin = data
+                print("TURN OFF: %d -> " % pin)
                 GPIO.output(pin, GPIO.LOW)
-                print("TURN OFF: %d -> DONE" % pin)
+                print("DONE")
             else:
                 GPIO.cleanup()
                 break
             send(s, 0)
-    except:
+            print("send")
+    except Exception as e:
         print("EXCEPTION WAS THROWN")
+        print(e)
+        GPIO.cleanup()
         send(s, 1)
 
 print("EXITING NOW...")

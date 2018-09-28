@@ -19,6 +19,7 @@ CONFIG_PATH = "./setting.ini"
 q = queue.Queue()
 finished = False
 if not os.path.isfile(CONFIG_PATH):
+    print("GENERATING A SETTING FILE...")
     with open(CONFIG_PATH, "w") as f:
         f.write("[PinMap]")
         for i in range(2,27):
@@ -29,7 +30,9 @@ config = ConfigParser.ConfigParser()
 config.read()
 pinmap = [0 for i in range(27)]
 for i in range(2, 27):
-    pinmap[i] = int(config.get("PinMap", str(i)))
+    res = int(config.get("PinMap", str(i)))
+    print("S {server} -> {reciever} R".format(server=i, reciever=res))
+    pinmap[i] = res
 
 
 def socketService(conn):
@@ -56,6 +59,5 @@ def controllerService():
 
 
 if __name__ == '__main__':
-
     threading.Thread(target=communicate, args=(socketService), name="Socket Server Thread").start()
-    threading.Thread().start()
+    threading.Thread(target=controllerService, name="Control Service Thread").start()

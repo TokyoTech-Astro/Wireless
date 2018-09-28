@@ -16,7 +16,7 @@ def send(conn, value):
     conn.send(value.to_bytes(1, 'big'))
 
 
-def recieve(conn, size=256):
+def recieve(conn, size=8):
     return int.from_bytes(conn.recv(size), 'big')
 
 
@@ -38,12 +38,15 @@ def communicate(service):
         s.listen(1)
         while True:
             conn, addr = s.accept()
-            print(addr)
+            print("CONNECTED TO {}.".format(addr))
             with conn:
                 try:
                     while service(conn):
-                        if recieve(conn) != 0:
+                        res = recieve(conn)
+                        print(res)
+                        if res != 0:
                             raise Exception
+                        print("SUCCESS")
                 except Exception as e:
                     send(conn, 0b01111111)
                     print(e)
@@ -79,5 +82,5 @@ def defaultService(conn):
 
 
 if __name__ == '__main__':
-    communicate(mainService)
+    communicate(defaultService)
         
