@@ -1,6 +1,7 @@
 import threading
 import queue
 import time
+import os
 import ConfigParser
 import RPi.GPIO as GPIO
 
@@ -13,10 +14,19 @@ class Task:
         self.pin = pin
 
 
+CONFIG_PATH = "./setting.ini"
+
 q = queue.Queue()
 finished = False
+if not os.path.isfile(CONFIG_PATH):
+    with open(CONFIG_PATH, "w") as f:
+        f.write("[PinMap]")
+        for i in range(2,27):
+            f.wirte("{} = ".format(i))
+            f.write("\n")
+
 config = ConfigParser.ConfigParser()
-config.read('setting.ini')
+config.read()
 pinmap = [0 for i in range(27)]
 for i in range(2, 27):
     pinmap[i] = int(config.get("PinMap", str(i)))
